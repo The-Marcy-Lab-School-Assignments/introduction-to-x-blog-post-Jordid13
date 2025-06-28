@@ -1,47 +1,47 @@
 # Transition from JavaScript to TypeScript
 
-As someone whose primary programming language has always been JavaScript, when I heard about TypeScript being a superset of JavaScript, I asked myself – What even is a superset? In the world of programming, a superset is a programming language that enhances another language by adding new features. In this case, TypeScript adds features like static typing and interfaces (just to mention a few), which make it more powerful than JavaScript. If you are coming from a JavaScript background, you might not understand what these new terms mean, which is why I am here to walk you through the basics of TypeScript from the lens of a JavaScript programmer!
+As someone whose primary programming language has always been JavaScript, when I heard about TypeScript being a superset of JavaScript, I asked myself – What even is a superset? In the world of programming, a superset is a programming language that enhances another language by adding new features. In this case, TypeScript adds features like static typing and interfaces (just to mention a couple), which make it more powerful than JavaScript. If you are coming from a JavaScript background, you might not understand what these new terms mean, which is why I am here to walk you through the basics of TypeScript from the perspective of a JavaScript programmer!
 
 Here's a brief outline of what I'll be covering in this article:
 
-- **Static Typing**
-- **Interfaces and Type Aliases**
-- **Explicit Types and Narrowing**
-- **Wrapping up & tips**
+- [**Static Typing**](#static-typing)
+- [**Interfaces and Type Aliases**](#interfaces-and-type-aliases)
+- [**Type Annotations and Narrowing**](#type-annotations-and-narrowing)
+- [**Wrapping up & tips**](#wrapping-up-and-tips)
 
 ## Static Typing
 
-Static typing is one of the most important features of TypeScript that I didn't know I needed until I started using it. Static typing essentially means that the type of any variable is determined at compile time, not at runtime. But what are compile time and runtime, you might be wondering? Compile time occurs when the compiler executes and takes our high-level code and converts it into a language that our computers can work with. On the other hand, runtime happens when our code is executed through a program. This is all to say that TypeScript basically determines the types of variables before actually running the code. This is incredibly beneficial for developers because the compiler can catch errors early and prevent them from occurring in the code when it's actually run.
+Static typing is one of the most important features of TypeScript that I didn't know I needed until I started using it. Static typing essentially means that the type of any variable is determined at compile time, not at runtime. But what are compile time and runtime, you might be wondering? Compile time occurs when the TypeScript compiler analyzes the code, checks for errors, and converts it into JavaScript, which can then be run in browsers or Node.js. On the other hand, runtime happens when our code is executed by the JavaScript engine. This means that TypeScript determines the types of variables before actually running the code. This is incredibly beneficial for developers because the compiler can catch errors early and prevent them from occurring in the code when it's actually run.
 
-For example, let's say that I want to store a list of my best friends in an array. That array should contain strings representing their names, not any other type of data. With static typing, I am able to let the compiler know that the array should only contain strings. See an example of this in the code below:
+For example, let's say I want to store a list of my best friends in an array. That array should contain strings representing their names, not any other type of data. With static typing, I am able to let the compiler know that the array should only contain strings. See an example of this in the code below:
 
 ```ts
 const friends: string[] = [];
 ```
 
-If you are coming from a JavaScript background, you might be wondering why there is a colon after the variable name. This is because in TypeScript, the colon is used to specify the type of the variable like this `variable: type of variable`. So in the code above, what we're saying is that the `friends` variable should be an array of strings `string[]` and nothing else. You might also be wondering what `string[]` means; this is just a way of saying an array where its elements are strings. You can think of it as a pattern: `<type><data structure>` where the type is string and the data structure is an array. If I try to store any other type of data in this array, the compiler will throw an error. See the example in the code below:
+If you are coming from a JavaScript background, you might be wondering why there is a colon after the variable name. This is because in TypeScript, the colon is used to specify the type of the variable, like this: `variable: type`. So in the code above, what we're saying is that the `friends` variable should be an array of strings (`string[]`) and nothing else. You might also be wondering what `string[]` means. The syntax `string[]` means 'an array of strings'. You might also see this written as `Array<string>`, which is just another way of saying the same thing. If I try to store any other type of data in this array, the compiler will report an error. See the example in the code below:
 
 ```ts
 const friends: string[] = [];
 
-friends[0] = 123; // Compiler is not happy - Throws error: Type 'number' is not assignable to type 'string'.
-friends[0] = "Bacon"; // Compiler rocks with this!
+friends[0] = 123; // Compiler is not happy - Error: Type 'number' is not assignable to type 'string'.
+friends[0] = "Bacon"; // Compiler rocks with this! - "Bacon" is of type string
 ```
 
-At first glance, this might seem like a small change, but it has a huge impact in terms of code quality and maintainability. Imagine that you are working on a large project with multiple developers. Variables are being created everywhere, and it's easy to make mistakes like assigning the wrong data type to a variable, especially when dealing with large amounts of code and if you lack familiarity with the codebase. In TypeScript, the compiler will catch these errors before the code is even run and prevent them from ever being executed, which accelerates the development process, makes the code more reliable, and improves code readability and maintainability for other developers.
+At first glance, this might seem like a small change, but it has a huge impact in terms of code quality and maintainability. Imagine that you are working on a large project with multiple developers. Variables are being created everywhere, and it's easy to make mistakes like assigning the wrong data type to a variable, especially when dealing with large amounts of code or if you lack familiarity with the codebase. In TypeScript, the compiler will catch these errors before the code is even run and prevent them from ever being executed, which accelerates the development process, makes the code more reliable, and improves code readability and maintainability for other developers.
 
 > The compiler will become your best friend and worst enemy
 
 ## Interfaces and Type Aliases
 
-The friends array example is helpful, but what if we want to declare more complex types? Let's delve deeper into the other core features of TypeScript: interfaces along with type aliases; and how we can use interfaces and types to define more complex data structures.
-Before delving into interfaces and type aliases, let's kick things off by understanding what a type is. A type in TypeScript is a way to define the structure of a variable. You are probably familiar with different primitive JavaScript types like `number`, `string`, `boolean`, etc. Generally, we wouldn't usually define a type for a variable in JavaScript, so we would let them be defined at runtime and do something like this:
+The friends array example is helpful, but what if we want to declare more complex types? Let's delve deeper into the other core features of TypeScript: interfaces and type aliases, and how we can use them to define more complex data structures.
+Before delving into interfaces and type aliases, let's start by understanding what a type is. A type in TypeScript is a way to define the structure of a variable. You are probably familiar with different primitive JavaScript types like `number`, `string`, `boolean`, etc. Generally, in JavaScript, we wouldn't usually define a type for a variable; instead, we let it be defined at runtime, as in the example below:
 
 ```js
 let name = "Marco";
 ```
 
-In the above example, the variable `name` is of type string even though it's not declared as such. This is because JavaScript infers the type of a variable from the value. JavaScript also doesn't enforce strictness, which means that a variable can hold any type of value at any time and if we try to reassign the variable to a different type, like a `number`, the JavaScript engine will set the variable type to a new type with no problem.
+In the above example, the variable `name` is of type string even though it's not declared as such. This is because JavaScript infers the type of a variable from the value. JavaScript also doesn't enforce strict typing. This means a variable can hold any type of value, and you can reassign it to a different type (for example, from a string to a number) without any issues.
 
 ```js
 let name = "Marco"; // value is a string
@@ -51,7 +51,7 @@ name = 10; // value is a number
 name = true; // value is a boolean
 ```
 
-The above code highlights one of the inconsistencies in JavaScript which TypeScript addresses with its type system. In TypeScript, we have the ability to create a type `Name` which we can use later when we need to create a new name and enforce certain rules about what the variable can be. These are called type aliases.
+The code above shows how JavaScript allows a variable to change its type freely, which can sometimes lead to unexpected behavior. TypeScript helps address this by letting us define specific types for our variables. For example, we can create a custom type called `Name` to ensure that variables meant to represent a name always follow certain rules. This is done using a feature of TypeScript called type aliases.
 
 ```ts
 // Declares the type Name and assigns it the type string (Name is the alias of type string)
@@ -64,7 +64,7 @@ let myName: Name = "Marco";
 let friendsName: Name = "Bryan";
 ```
 
-In the above example, the variable `myName` is of type `Name` which is a `string` and it's declared as such, so if we try to assign any other type aside from `Name` to it, the compiler will report an error. This makes the code more reliable and predictable since now we know exactly what type the variable is. Now, what if we wanted to create a more robust type for name that contains the first and last name? In that case, we can just assign our type to an object with the properties `first` and `last`.
+In the above example, the variable `myName` is of type `Name`, which is a `string`, and it's declared as such. So if we try to assign any other type aside from `Name` to it, the compiler will report an error. This makes the code more reliable and predictable since now we know exactly what type the variable is. But what if we wanted to create a more robust type for `Name` that contains the first and last name? In that case, we can assign our type to an object with the properties `first` and `last`.
 
 ```ts
 // Now type Name must be an object with first and last properties
@@ -74,7 +74,7 @@ type Name = { first: string; last: string };
 let myName: Name = { first: "Marco", last: "Polo" };
 ```
 
-This is one way to add more properties to our type, but we can also use an `interface`. Interfaces are very similar to types; however, the core differences are that `interfaces` are much more flexible in situations when we are dealing with more complex data and can only describe the shape of an object (ideal for this situation).
+This is one way to add more properties to our type, but we can also use an `interface`. Interfaces are very similar to types; however, the core difference is that `interfaces` are much more flexible in situations when we are dealing with more complex data and want to define the shape of an object (ideal for this situation).
 
 Let's look at an example of how we can use interfaces to define the type of `Name`.
 
@@ -116,7 +116,7 @@ interface NameWithLanguage extends Name {
 }
 ```
 
-The above code highlights the dynamic nature of JavaScript's type system, which TypeScript addresses with static typing. Interfaces allow us to add properties by extending them using the `extends` keyword, whereas with type aliases we have to redefine the type each time and intersect both types. This makes interfaces much more flexible to work with when dealing with object data that may need to be extended or modified, whereas type aliases are more useful for representing types that are not objects, such as strings or numbers.
+The above examples highlight the added flexibility that interfaces provide when it comes to extending types. Interfaces allow us to add properties by extending them using the `extends` keyword, whereas with type aliases, we have to redefine the type each time and intersect both types. Interfaces are generally more flexible when we're dealing with objects that may need to be extended or modified, while type aliases are useful for primitives, unions, intersections, or when you need to compose types in more complex ways.
 
 ## Type Annotations and Narrowing
 
@@ -162,7 +162,9 @@ const myName: NameObj = { name: "Marco" };
 logName(myName);
 ```
 
-Now that we understand the basics of type annotations, let's delve deeper into narrowing types in TypeScript. Sometimes the TypeScript compiler will warn us when we try to use methods on types we're not supposed to. For example, let's say that we have a function that takes a number or a string and makes it uppercase. Sounds simple enough, but there's a catch! If we try to use the `.toUpperCase()` method on the input, we will get an error. See the example below:
+Now that we understand the basics of type annotations, let's delve deeper into narrowing types in TypeScript. Sometimes the TypeScript compiler will warn us when we try to use methods on types we're not supposed to. This is better explained with an example. Imagine that for some strange reason, we need to make a function that can take either a number or a string and make it uppercase. If you are familiar with JavaScript, you might know that you can't use the `.toUpperCase()` method on a number. Even though we know that this is true due to JavaScript's nature of determining variable types at runtime, it will try to run the code and run into an error. However, in TypeScript, if we try to do the same, the compiler will immediately report it as an error.
+
+See the example below:
 
 ```ts
 const makeUpperCase = (content: number | string): string => {
@@ -172,15 +174,15 @@ const makeUpperCase = (content: number | string): string => {
 
 Before proceeding to explain why this error is happening, you might have noticed a new symbol here: `|`. This is called a union type, and it basically tells the compiler, "hey, this `content` parameter can be of type number or string." You can think of it as similar to using "or" (`||`) in logic, but for type annotations. (Note: `|` is not the same as `||` in code, but conceptually, it means "either type.")
 
-Now back to the error. The above error happens because TypeScript knows that `content` can be either a `number` or a `string`, and the compiler knows that trying to use the `toUpperCase()` method on a number is not possible. So, how do we get around this? We can use type narrowing to narrow down the type of the `content` variable to either a string or a number. This can look like a simple if-else statement that checks the type of `content` and then performs the appropriate action.
+Now back to the error. The above error happens because the compiler notices that `content` can be either a `number` or a `string`, and it also knows that trying to use the `toUpperCase()` method on a number is not possible. Thanks for the heads up, compiler! But how do we get around this? We can use type narrowing to narrow down the type of the `content` variable to either a string or a number. This can look like a simple if-else statement that checks the type of `content` and then performs the appropriate action.
 
 ```ts
 const makeUpperCase = (content: number | string): string => {
   // Here our if statement is narrowing by checking if the content is a number and handles it appropriately
   if (typeof content === "number") {
-    // Convert the number to a string and return the uppercase version of it
+    // Convert the number to a string and return it
     const convertedNumber = content.toString();
-    return convertedNumber.toUpperCase();
+    return convertedNumber;
   } else {
     // If the type is not a number then it must be a string so we can just make it uppercase and return
     return content.toUpperCase();
@@ -188,11 +190,13 @@ const makeUpperCase = (content: number | string): string => {
 };
 ```
 
-In the above example, the compiler will not throw any errors because we are properly handling our inputs. If the content is a number, we first convert it to a string using the `toString()` method and then make it uppercase (though note that making a number string uppercase doesn't change it, e.g., `"123".toUpperCase()` is still `"123"`). Otherwise, if the content is a string, we can just make it uppercase directly and return it. This is a common pattern in TypeScript when we need to handle different types of inputs in a function and ensure that the correct method is called based on the type of the input. Although it requires a bit of code, it's incredibly useful to catch errors early on in the development process.
+In the above example, the compiler will not throw any errors because we are properly handling our inputs. If the content is a number, we convert it to a string using the `toString()` method and then return it, because making a number string uppercase doesn't change it. Otherwise, if the content is a string, we can just make it uppercase directly and return it. This is a common pattern in TypeScript when we need to handle different types of inputs in a function and ensure that the correct method is called based on the type of the input. Although it requires a bit of code, it's incredibly useful to catch errors early on in the development process.
 
 ## Wrapping Up and Tips
 
 I hope you enjoyed this article and found it helpful in your transition from JavaScript to TypeScript. My TypeScript journey so far has been great; I love the way TypeScript helps me write better, more maintainable code and how it alerts me when I make mistakes. I'm excited to continue developing my knowledge in TypeScript and sharing my experiences with others!
-If I were to start from scratch, I would heavily rely on the official TypeScript documentation as they also have a guide tailored for developers who have familiarity with JavaScript. Another tip is to always practice a new concept. Most of the time I have the documentation and my code editor open. Whenever there is a new concept I learn, I try to implement it in my own way, coming up with my own examples. I highly recommend following this approach!
+If I were to start from scratch, I would heavily rely on the official TypeScript documentation, as they also have a guide tailored for developers who are already familiar with JavaScript. Another tip is to always practice a new concept. Most of the time, I have the documentation and my code editor open. Whenever I learn a new concept, I try to implement it in my own way, coming up with my own examples. I highly recommend following this approach!
+
 All of the information in this article is available in the official TypeScript documentation, which you can visit at https://www.typescriptlang.org/docs/.
+
 Best of luck in your TypeScript journey!
